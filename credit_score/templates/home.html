@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <title>Credit Assessment Form</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+</head>
+<body>
+
+  <!-- Page Header -->
+  <header>
+    <h1>Credit Assessment Form</h1>
+    <p>Hi, {{request.session.username}}..Answer a few questions to determine your credit score.</p>
+  </header>
+
+  <!-- Start Assessment Button -->
+  <div class="start-button-container">
+    <button onclick="openPopup()" class="start-button">Start Assessment</button>
+  </div>
+  <div style="text-align: center;">
+    <h4><a href="{% url 'calculate_user_score' %}">Check Credit Score</a></h4>
+    <h5><a href="{% url 'logout' %}">Logout</a></h5>
+  </div>
+
+  <!-- Popup Modal for Questions -->
+  <div id="popupModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span onclick="closePopup()" class="close">&times;</span>
+      
+      <!-- Progress Bar -->
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <!-- Question Container -->
+      <div id="questionContainer">
+        <!-- Question text and answer options will be inserted here -->
+      </div>
+
+      <!-- Navigation Button -->     
+      <button onclick="nextQuestion()" id="nextButton" class="next-button" >Next</button>
+      <!-- Submit Button (to submit all answers at once) -->
+      <button onclick="submitResponses()" id="submitButton" class="submit-button">Submit</button>
+    </div>
+    </div>
+  </div>
+  {% if request.user.is_authenticated %}
+  <script type="text/javascript">
+    // Inject the user ID into JavaScript from Django's request.user
+    const currentUserId = "{{ request.user.id }}";  // Assuming the user is authenticated
+  </script>
+  {% endif %}
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
